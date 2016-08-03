@@ -4,20 +4,20 @@
 
 'use strict';
 
-const chai = require('chai'),
+var chai = require('chai'),
     assert = chai.assert,
     sinon = require('sinon'),
     proxyquire = require('proxyquire');
 
 describe('Prerender User Agent S3 Cache', function () {
 
-    let sandbox;
-    let req = {};
+    var sandbox;
+    var req = {};
 
-    let isMobileValue = false;
-    let isTabletValue = false;
+    var isMobileValue = false;
+    var isTabletValue = false;
 
-    const testUserAgent = {
+    var testUserAgent = {
         parse: function () {
             return {
                 isMobile: isMobileValue,
@@ -42,7 +42,7 @@ describe('Prerender User Agent S3 Cache', function () {
         }
     }
 
-    const userAgent = proxyquire('../lib/prerender-useragent-S3-cache', {
+    var userAgent = proxyquire('../lib/prerender-useragent-S3-cache', {
         'express-useragent': testUserAgent,
         'md5.js': testMD5
     });
@@ -61,8 +61,8 @@ describe('Prerender User Agent S3 Cache', function () {
 
     describe('Test before Phantom Request', function () {
 
-        let fakeCacheGet = sinon.stub();
-        let fakeSetCache = sinon.stub();
+        var fakeCacheGet = sinon.stub();
+        var fakeSetCache = sinon.stub();
 
         beforeEach(function () {
 
@@ -73,8 +73,8 @@ describe('Prerender User Agent S3 Cache', function () {
         });
 
         it('Request is not GET', function () {
-            let fakeNext = sinon.stub();
-            let res = {};
+            var fakeNext = sinon.stub();
+            var res = {};
 
             req.method = 'POST';
 
@@ -84,8 +84,8 @@ describe('Prerender User Agent S3 Cache', function () {
         });
 
         it('Request is a GET', function () {
-            let fakeNext = sinon.stub();
-            let res = {};
+            var fakeNext = sinon.stub();
+            var res = {};
 
             req.method = 'GET';
 
@@ -98,8 +98,8 @@ describe('Prerender User Agent S3 Cache', function () {
     describe('Test after Pahtnom Request', function () {
 
         it('The prender status code is different from 200', function () {
-            let fakeNext = sinon.stub();
-            let res = {};
+            var fakeNext = sinon.stub();
+            var res = {};
 
             req.prerender = {
                 statusCode: 400
@@ -120,57 +120,57 @@ describe('Prerender User Agent S3 Cache', function () {
         });
 
         it('Mobile', function () {
-            let userAgentString = '_mobile_';
-            let md5Result = '0X0';
-            let url = 'http://test.com/page';
+            var userAgentString = '_mobile_';
+            var md5Result = '0X0';
+            var url = 'http://test.com/page';
 
             fakeUpdate.digest.returns(md5Result);
             isMobileValue = true;
 
-            let s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
+            var s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
 
             assert(fakeUpdate.digest.called);
             assert.equal(s3Key, url.concat(userAgentString).concat(md5Result));
         });
 
         it('Tablet', function () {
-            let userAgentString = '_tablet_';
-            let md5Result = '0X0';
-            let url = 'http://test.com/page';
+            var userAgentString = '_tablet_';
+            var md5Result = '0X0';
+            var url = 'http://test.com/page';
 
             fakeUpdate.digest.returns(md5Result);
             isTabletValue = true;
 
-            let s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
+            var s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
 
             assert(fakeUpdate.digest.called);
             assert.equal(s3Key, url.concat(userAgentString).concat(md5Result));
         });
 
         it('Desktop or otherwise', function () {
-            let userAgentString = '_desktop_';
-            let md5Result = '0X0';
-            let url = 'http://test.com/page';
+            var userAgentString = '_desktop_';
+            var md5Result = '0X0';
+            var url = 'http://test.com/page';
 
             fakeUpdate.digest.returns(md5Result);
 
-            let s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
+            var s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
 
             assert(fakeUpdate.digest.called);
             assert.equal(s3Key, url.concat(userAgentString).concat(md5Result));
         });
 
         it('If is both mobile and tablet is saved as tablet', function () {
-            let userAgentString = '_tablet_';
-            let md5Result = '0X0';
-            let url = 'http://test.com/page';
+            var userAgentString = '_tablet_';
+            var md5Result = '0X0';
+            var url = 'http://test.com/page';
 
             isMobileValue = true;
             isTabletValue = true;
 
             fakeUpdate.digest.returns(md5Result);
 
-            let s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
+            var s3Key = userAgent.testS3KeyGenerator.genarateKey(url, userAgentString);
 
             assert(fakeUpdate.digest.called);
             assert.equal(s3Key, url.concat(userAgentString).concat(md5Result));
