@@ -36,11 +36,10 @@ describe('Prerender User Agent S3 Cache', function () {
         }
     };
 
-    class testMD5 {
-        constructor() {
-            return fakeMD5;
-        }
-    }
+
+    var testMD5 = function() {
+        return fakeMD5;
+    };
 
     var userAgent = proxyquire('../lib/prerender-useragent-S3-cache', {
         'express-useragent': testUserAgent,
