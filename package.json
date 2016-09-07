@@ -1,6 +1,6 @@
 {
   "name": "prerender-user-agent-s3-cache",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Prerender S3 User Agent Cache",
   "main": "index.js",
   "author": "Byte-code",
